@@ -6,7 +6,7 @@ defmodule HarSurgeonWeb.Router do
     plug :fetch_session
     plug :fetch_live_flash
     plug :put_root_layout, html: {HarSurgeonWeb.Layouts, :root}
-    plug :protect_from_forgery
+    #plug :protect_from_forgery
     plug :put_secure_browser_headers
   end
 
@@ -17,6 +17,8 @@ defmodule HarSurgeonWeb.Router do
   scope "/", HarSurgeonWeb do
     pipe_through :browser
 
-    live "/", IndexLive
+    get "/", IndexController, :home
+    get "/tid/:tid", IndexController, :json_view
+    post "/upload", IndexController, :upload
   end
 end

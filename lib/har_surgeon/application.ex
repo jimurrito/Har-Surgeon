@@ -8,6 +8,14 @@ defmodule HarSurgeon.Application do
   @impl true
   def start(_type, _args) do
     children = [
+      #
+      # App
+      #
+      HarSurgeon.Tracker,
+
+      #
+      # PHOENIX
+      #
       HarSurgeonWeb.Telemetry,
       {DNSCluster, query: Application.get_env(:har_surgeon, :dns_cluster_query) || :ignore},
       {Phoenix.PubSub, name: HarSurgeon.PubSub},

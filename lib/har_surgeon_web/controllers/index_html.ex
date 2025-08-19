@@ -1,4 +1,4 @@
-defmodule HarSurgeonWeb.PageHTML do
+defmodule HarSurgeonWeb.IndexHTML do
   @moduledoc """
   This module contains pages rendered by PageController.
 
@@ -6,5 +6,5 @@ defmodule HarSurgeonWeb.PageHTML do
   """
   use HarSurgeonWeb, :html
 
-  embed_templates "page_html/*"
+  embed_templates "html/*"
 end
