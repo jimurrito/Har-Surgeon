@@ -1,3 +1,97 @@
-<div class="bg-white p-4 rounded shadow-lg border-grey-400">
-  {@json}
+<div class="">
+  <!--
+  
+  -->
+  <div class="bg-white p-4 rounded shadow-lg border-grey-400">
+    <div><b>Filename:</b> {@filename}</div>
+    
+    <div><b>Browser:</b> {@browser |> :json.encode()}</div>
+    
+    <div><b>Pages:</b> {@pages |> :json.encode()}</div>
+  </div>
+  <!--
+  
+  -->
+  <div class="my-4" />
+  <!--
+  
+  -->
+  <div>
+    <%= for entry <- @entries do %>
+      <div x-data="{ open: false }" class="border border-gray-300 rounded-lg shadow-sm mb-4">
+        <!-- Collapsed Summary -->
+        <div
+          @click="open = !open"
+          class="flex justify-between items-center p-4 bg-gray-100 cursor-pointer hover:bg-gray-200"
+        >
+          <div>
+            <p class="text-sm text-gray-600">
+              <strong>Started:</strong> {entry["startedDateTime"]}
+            </p>
+            
+            <p class="text-lg font-semibold">
+              {entry["request"]["method"]} → {entry["request"]["url"]}
+            </p>
+            
+            <p class="text-sm text-gray-600">
+              <strong>Status:</strong> {entry["request"]["response"]["status"]} |
+              <strong>Time:</strong> {entry["request"]["time"]} ms
+            </p>
+          </div>
+          
+          <div class="text-gray-500 text-xl">
+            <span x-show="!open">▶</span> <span x-show="open">▼</span>
+          </div>
+        </div>
+        <!-- Expanded Details -->
+        <div x-show="open" class="p-4 space-y-4 bg-white">
+          <!-- Request Headers -->
+          <div>
+            <h4 class="text-md font-bold text-gray-700">Request Headers</h4>
+            
+            <ul class="list-disc list-inside text-sm text-gray-800">
+              <%= for header <- entry["request"]["headers"] do %>
+                <li><strong>{header["name"]}:</strong> {header["value"]}</li>
+              <% end %>
+            </ul>
+          </div>
+          <!-- Cookies -->
+          <div>
+            <h4 class="text-md font-bold text-gray-700">Cookies</h4>
+            
+            <ul class="list-disc list-inside text-sm text-gray-800">
+              <%= for cookie <- entry["request"]["cookies"] do %>
+                <li><strong>{cookie["name"]}:</strong> {cookie["value"]}</li>
+              <% end %>
+            </ul>
+          </div>
+          <!-- Post Data -->
+          <div>
+            <h4 class="text-md font-bold text-gray-700">Post Data</h4>
+            
+            <p class="text-sm">
+              <strong>MIME Type:</strong> {entry["request"]["postData"]["mimeType"]}
+            </p>
+             <pre class="bg-gray-100 p-2 rounded text-xs overflow-x-auto"><%= entry["request"]["postData"]["text"] %></pre>
+          </div>
+          <!-- Content -->
+          <div>
+            <h4 class="text-md font-bold text-gray-700">Content</h4>
+            
+            <p class="text-sm">
+              <strong>MIME Type:</strong> {entry["request"]["response"]["content"]["mimeType"]}
+            </p>
+            
+            <p class="text-sm">
+              <strong>Size:</strong> {entry["request"]["response"]["content"]["size"]} bytes
+            </p>
+             <pre class="bg-gray-100 p-2 rounded text-xs overflow-x-auto"><%= entry["request"]["response"]["content"]["text"] %></pre>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+  <!--
+  
+  -->
 </div>

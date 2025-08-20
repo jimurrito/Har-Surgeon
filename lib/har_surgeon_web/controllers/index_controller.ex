@@ -11,13 +11,22 @@ defmodule HarSurgeonWeb.IndexController do
   #
   # Process uploads via POST
   def upload(conn, params) do
-    # Parse json from download
-    tid =
+    file_data =
       params
       |> Map.fetch!("file")
+
+    json_data =
+      file_data
       |> Map.fetch!(:path)
       |> File.read!()
-      |> Tracker.new()
+      |> :json.decode()
+
+    payload = %{
+      filename: file_data |> Map.fetch!(:filename),
+      json: json_data
+    }
+
+    tid = Tracker.new(payload)
 
     redirect(conn, to: ~p"/tid/#{tid}")
   end
@@ -26,10 +35,19 @@ defmodule HarSurgeonWeb.IndexController do
   # redirects user to the page where they can view the json data
   def json_view(conn, %{"tid" => tid}) do
     # pull JSON data using tid
-    # decodes binary data into json object
-    # |> :json.decode()
-    json = Tracker.get(tid)
+    tracker_data = Tracker.get(tid)
+    payload = tracker_data |> Map.fetch!(:json) |> Map.fetch!("log")
+    # deconstruct payload
+    entries = payload |> Map.fetch!("entries")
+    browser = payload |> Map.fetch!("browser")
+    pages = payload |> Map.fetch!("pages")
 
-    render(conn, :json_view, tid: tid, json: json)
+    render(conn, :json_view,
+      tid: tid,
+      filename: tracker_data.filename,
+      entries: entries,
+      browser: browser,
+      pages: pages
+    )
   end
 end

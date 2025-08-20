@@ -22,8 +22,8 @@ defmodule HarSurgeon.Tracker do
   Creates a new login record to be tracked. Stores the JSON data if available.
   Returns tracking ID for the front end to query from.
   """
-  @spec new(binary()) :: binary()
-  def new(json \\ "") do
+  @spec new(map()) :: binary()
+  def new(json \\ %{}) do
     trackingid = UUID.uuid4()
     :ok = update(trackingid, json)
     trackingid
@@ -34,7 +34,7 @@ defmodule HarSurgeon.Tracker do
   @doc """
   Updates the cache for uploaded JSON data.
   """
-  @spec update(binary(), binary()) :: :ok
+  @spec update(binary(), map()) :: :ok
   def update(trackingid, json) do
     Agent.update(__MODULE__, &(&1 |> Map.put(trackingid, json)))
   end
@@ -44,7 +44,7 @@ defmodule HarSurgeon.Tracker do
   @doc """
   Retrieves data from a Tracking ID
   """
-  @spec get(binary()) :: binary()
+  @spec get(binary()) :: map()
   def get(trackingid) do
     Agent.get(__MODULE__, &(&1 |> Map.get(trackingid)))
   end
