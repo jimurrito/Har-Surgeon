@@ -32,7 +32,7 @@
 3. Clone the repository:
     ```bash
     git clone https://github.com/jimurrito/har_surgeon.git
-    cd har_surgeon
+    cd har-surgeon
     ```
 
 4. Install dependencies:
@@ -49,15 +49,17 @@
 
 ## Usage
 
-- Upload or paste into the web page.
+- Upload or paste your HAR Trace into the web page.
 - Once you submit the HAR trace via the `upload` button, the trace will be parsed and then displayed.
 
 
 ## Notes
-HAR traces can and will capture all data input and output from the captured browser session. Some data maybe senstive and contain PII. Please be aware that the traces are displayed `as-is` and will not automatically redact senstive material from the trace.
+HAR traces can and will capture all data input and output from the captured browser session. Some data maybe senstive and contain PII. Please be aware that the traces are displayed `as-is` and will not automatically redact senstive material PII from the trace.
+
+> It will however remove the bearer token from the HTTP headers when the trace is displayed. If the OAUTH bearer token called `Authorization` is passed, the value will always be displayed as `REDACTED`.
 
 
 ## Feature backlog
-- Streamline UI design.
-- Ability to redact known sensitve data like `bearer tokens`.
+- ~~Streamline UI design.~~
+- ~~Ability to redact known sensitve data like `bearer tokens`.~~
 - RAM cache time-based garbage collection.
