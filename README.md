@@ -1,18 +1,63 @@
-# HarSurgeon
+<img src="priv\static\images\har_surgeon_logo_op.png" style="height:200px; width:auto;">
 
-To start your Phoenix server:
+# HAR Surgeon
 
-  * Run `mix setup` to install and setup dependencies
-  * Start Phoenix endpoint with `mix phx.server` or inside IEx with `iex -S mix phx.server`
+## Features
 
-Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
+- 🔥**Blazingly Fast and responsive**🔥 - Front end uses only HTML, Alpine.JS and Tailwind-CSS.
+- **Accessibily** - Parses HAR files and extracts the data in a readable web-based interface.
+- **Secure** - Data is kept local to the machine, and stored in RAM.
+- **Offline Support** - App can be ran with out any internet connection. All logic is ran locally on the machine.
+- **Multi-Tasking** - Supports multiple browser windows to allow for checking multiple traces at once.
 
-Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
+## Setup
 
-## Learn more
+> **From source build is the only option as of now**. OS-based releases will eventually be added to allow for execution of the app without needing to install the toolchain.
 
-  * Official website: https://www.phoenixframework.org/
-  * Guides: https://hexdocs.pm/phoenix/overview.html
-  * Docs: https://hexdocs.pm/phoenix
-  * Forum: https://elixirforum.com/c/phoenix-forum
-  * Source: https://github.com/phoenixframework/phoenix
+### From Source
+
+1. Install Elixir 1.18 and Erland OTP 27:
+
+    - [Elixir 1.18](https://elixir-lang.org/install.html)
+    - [Erland OTP 27](https://www.erlang.org/downloads/27)
+
+2. Validate install:
+    ```bash
+    $> elixir -v
+
+    # Erlang/OTP 27 [erts-15.2.4] [source] [64-bit] [smp:12:12] [ds:12:12:10] [async-threads:1] [jit:ns]
+    # Elixir 1.18.3 (compiled with Erlang/OTP 27)
+    ```
+
+3. Clone the repository:
+    ```bash
+    git clone https://github.com/jimurrito/har_surgeon.git
+    cd har_surgeon
+    ```
+
+4. Install dependencies:
+    ``` bash
+    mix deps.get
+    ```
+
+5. Start the web server:
+   ```
+   mix phx.server
+   ```
+
+6. Open your browser to [http://localhost:4000](http://localhost:4000)
+
+## Usage
+
+- Upload or paste into the web page.
+- Once you submit the HAR trace via the `upload` button, the trace will be parsed and then displayed.
+
+
+## Notes
+HAR traces can and will capture all data input and output from the captured browser session. Some data maybe senstive and contain PII. Please be aware that the traces are displayed `as-is` and will not automatically redact senstive material from the trace.
+
+
+## Feature backlog
+- Streamline UI design.
+- Ability to redact known sensitve data like `bearer tokens`.
+- RAM cache time-based garbage collection.
