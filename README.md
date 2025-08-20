@@ -1,4 +1,4 @@
-<img src="priv\static\images\har_surgeon_logo_op.png" style="height:200px; width:auto;">
+<img src="https://github.com/jimurrito/har_surgeon/blob/master/priv/static/images/har_surgeon_logo_op.PNG" style="height:250px; width:auto;">
 
 # HAR Surgeon
 
