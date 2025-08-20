@@ -4,10 +4,12 @@
   -->
   <div class="bg-white p-4 rounded shadow-lg border-grey-400">
     <div><b>Filename:</b> {@filename}</div>
-    
-    <div><b>Browser:</b> {@browser |> :json.encode()}</div>
-    
-    <div><b>Pages:</b> {@pages |> :json.encode()}</div>
+    <!-- -->
+    <strong>Browser:</strong> <pre class="bg-gray-100 p-2 rounded text-xs overflow-x-auto">
+{@browser |> HarSurgeonWeb.JsonComponents.format_json()}</pre>
+    <!-- -->
+    <strong>Pages:</strong> <pre class="bg-gray-100 p-2 rounded text-xs overflow-x-auto">
+{@pages |> HarSurgeonWeb.JsonComponents.format_json()}</pre>
   </div>
   <!--
   
@@ -18,11 +20,18 @@
   -->
   <div>
     <%= for entry <- @entries do %>
-      <div x-data="{ open: false }" class="border border-gray-300 rounded-lg shadow-sm mb-4">
-        <!-- Collapsed Summary -->
+      <div
+        x-data="{ open: false, showRequest: false, showResponse: false }"
+        class="border border-gray-300 rounded-lg shadow-sm mb-4"
+      >
+        <!-- 
+        
+        Summary Header 
+        
+        -->
         <div
           @click="open = !open"
-          class="flex justify-between items-center p-4 bg-gray-100 cursor-pointer hover:bg-gray-200"
+          class={"flex justify-between items-center p-4 cursor-pointer #{HarSurgeonWeb.JsonComponents.method_color(entry["request"]["method"])}"}
         >
           <div>
             <p class="text-sm text-gray-600">
@@ -34,8 +43,8 @@
             </p>
             
             <p class="text-sm text-gray-600">
-              <strong>Status:</strong> {entry["request"]["response"]["status"]} |
-              <strong>Time:</strong> {entry["request"]["time"]} ms
+              <strong>Status:</strong> {entry["response"]["status"]} |
+              <strong>Time:</strong> {entry["time"]} ms
             </p>
           </div>
           
@@ -43,49 +52,143 @@
             <span x-show="!open">▶</span> <span x-show="open">▼</span>
           </div>
         </div>
-        <!-- Expanded Details -->
+        <!-- 
+        
+        Expanded Details 
+        
+        -->
         <div x-show="open" class="p-4 space-y-4 bg-white">
-          <!-- Request Headers -->
-          <div>
-            <h4 class="text-md font-bold text-gray-700">Request Headers</h4>
+          <!-- 
+          
+
+          Request Section 
+          
+
+          -->
+          <div x-data="{ show: false }">
+            <div
+              @click="show = !show"
+              class="cursor-pointer text-md font-bold text-gray-700 hover:text-blue-600"
+            >
+              Request Details <span x-show="!show">▶</span><span x-show="show">▼</span>
+            </div>
             
-            <ul class="list-disc list-inside text-sm text-gray-800">
-              <%= for header <- entry["request"]["headers"] do %>
-                <li><strong>{header["name"]}:</strong> {header["value"]}</li>
+            <div x-show="show" class="mt-2 space-y-2">
+              <!-- 
+
+              Headers 
+
+              -->
+              <div class="my-4">
+                <h5 class="font-bold text-gray-600">Headers</h5>
+                <hr class="my-2"/>
+                <ul class="list-disc list-inside text-sm text-gray-800">
+                  <%= for header <- entry["request"]["headers"] do %>
+                    <li><strong>{header["name"]}:</strong> {header["value"]}</li>
+                  <% end %>
+                </ul>
+              </div>
+              <!-- 
+              
+              Cookies 
+              
+              -->
+              <div class="my-4">
+                <h5 class="font-bold text-gray-600">Cookies</h5>
+                <hr class="my-2"/>
+                <ul class="list-disc list-inside text-sm text-gray-800">
+                  <%= for cookie <- entry["request"]["cookies"] do %>
+                    <li><strong>{cookie["name"]}:</strong> {cookie["value"]}</li>
+                  <% end %>
+                </ul>
+              </div>
+              <!-- 
+              
+              Post Data 
+              
+              -->
+              <%= if entry["request"]["postData"] do %>
+                <div>
+                  <h5 class="font-bold text-gray-600">Post Data</h5>
+                  <hr class="my-2"/>
+                  <p class="text-sm">
+                    <strong>MIME Type:</strong> {entry["request"]["postData"]["mimeType"]}
+                  </p>
+                   <pre class="bg-gray-100 p-2 rounded text-xs overflow-x-auto"><%= HarSurgeonWeb.JsonComponents.format_json(entry["request"]["postData"]["text"]) %></pre>
+                </div>
               <% end %>
-            </ul>
+            </div>
           </div>
-          <!-- Cookies -->
-          <div>
-            <h4 class="text-md font-bold text-gray-700">Cookies</h4>
+          <!-- 
+
+          -->
+          <hr class="border-t-4 border-gray-600" />
+          <!-- 
+          
+
+          Response Section 
+          
+
+          -->
+          <div x-data="{ show: false }">
+            <div
+              @click="show = !show"
+              class="cursor-pointer text-md font-bold text-gray-700 hover:text-blue-600"
+            >
+              Response Details <span x-show="!show">▶</span><span x-show="show">▼</span>
+            </div>
             
-            <ul class="list-disc list-inside text-sm text-gray-800">
-              <%= for cookie <- entry["request"]["cookies"] do %>
-                <li><strong>{cookie["name"]}:</strong> {cookie["value"]}</li>
+            <div x-show="show" class="mt-2 space-y-2">
+              <!-- 
+              
+              Headers 
+              
+              -->
+              <div class="my-4">
+                <h5 class="font-bold text-gray-600">Headers</h5>
+                <hr class="my-2"/>
+                <ul class="list-disc list-inside text-sm text-gray-800">
+                  <%= for header <- entry["response"]["headers"] do %>
+                    <li><strong>{header["name"]}:</strong> {header["value"]}</li>
+                  <% end %>
+                </ul>
+              </div>
+              <!-- 
+              
+              Cookies 
+              
+              -->
+              <%= if entry["response"]["cookies"] && entry["response"]["cookies"] != [] do %>
+                <div class="my-4">
+                  <h5 class="font-bold text-gray-600">Cookies</h5>
+                  <hr class="my-2"/>
+                  <ul class="list-disc list-inside text-sm text-gray-800">
+                    <%= for cookie <- entry["response"]["cookies"] do %>
+                      <li><strong>{cookie["name"]}:</strong> {cookie["value"]}</li>
+                    <% end %>
+                  </ul>
+                </div>
               <% end %>
-            </ul>
-          </div>
-          <!-- Post Data -->
-          <div>
-            <h4 class="text-md font-bold text-gray-700">Post Data</h4>
-            
-            <p class="text-sm">
-              <strong>MIME Type:</strong> {entry["request"]["postData"]["mimeType"]}
-            </p>
-             <pre class="bg-gray-100 p-2 rounded text-xs overflow-x-auto"><%= entry["request"]["postData"]["text"] %></pre>
-          </div>
-          <!-- Content -->
-          <div>
-            <h4 class="text-md font-bold text-gray-700">Content</h4>
-            
-            <p class="text-sm">
-              <strong>MIME Type:</strong> {entry["request"]["response"]["content"]["mimeType"]}
-            </p>
-            
-            <p class="text-sm">
-              <strong>Size:</strong> {entry["request"]["response"]["content"]["size"]} bytes
-            </p>
-             <pre class="bg-gray-100 p-2 rounded text-xs overflow-x-auto"><%= entry["request"]["response"]["content"]["text"] %></pre>
+              <!-- 
+              
+              Content 
+              
+              -->
+              <%= if entry["response"]["content"] do %>
+                <div class="my-4">
+                  <h5 class="font-bold text-gray-600">Content</h5>
+                  <hr class="my-2"/>
+                  <p class="text-sm">
+                    <strong>MIME Type:</strong> {entry["response"]["content"]["mimeType"]}
+                  </p>
+                  
+                  <p class="text-sm">
+                    <strong>Size:</strong> {entry["response"]["content"]["size"]} bytes
+                  </p>
+                   <pre class="bg-gray-100 p-2 rounded text-xs overflow-x-auto"><%= HarSurgeonWeb.JsonComponents.format_json(entry["response"]["content"]["text"])  %></pre>
+                </div>
+              <% end %>
+            </div>
           </div>
         </div>
       </div>

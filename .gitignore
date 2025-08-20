@@ -35,5 +35,5 @@ har_surgeon-*.tar
 npm-debug.log
 /assets/node_modules/
 
-/*.har
+/example_data
 
