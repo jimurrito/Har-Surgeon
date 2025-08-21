@@ -1,5 +1,40 @@
-<div class="bg-white p-4 rounded shadow-lg border-grey-400">
-  <form method="post" enctype="multipart/form-data" action="/upload">
-    <input name="file" type="file" multiple /> <button type="submit">Upload</button>
-  </form>
+<div class="font-sans text-gray-800 px-4 max-w-screen-md mx-auto">
+
+  <div class="bg-white p-4 rounded-xl shadow-md border border-gray-200 mb-6 text-sm text-gray-700">
+    <p class="mb-2">
+      Welcome to HAR Surgeon — a tool designed to help you inspect and analyze HAR files with clarity and speed.
+    </p>
+    
+    <p class="mb-2">
+      To get started, upload a HAR file below. HAR Surgeon parse the trace data and present each request and response in a clean, expandable format.
+    </p>
+    
+    <p class="mb-2">
+      If you encounter any issues or have a feature request, please open an issue on the Github repo <a
+        class="font-semibold underline hover:text-indigo-700 transition"
+        href="https://github.com/jimurrito/Har-Surgeon/issues"
+      >here</a>.
+    </p>
+  </div>
+  
+  <div class="bg-white p-6 rounded-2xl shadow-xl border border-gray-200">
+    <form method="post" enctype="multipart/form-data" action="/upload" class="space-y-6">
+      <label class="block text-sm font-medium text-gray-700">Select HAR file:</label>
+      <input
+        name="file"
+        type="file"
+        multiple
+        accept=".har"
+        class="block w-full text-sm text-gray-700 border border-gray-300 rounded-lg cursor-pointer focus:outline-none focus:ring-2 focus:ring-indigo-500"
+      />
+      <div class="flex justify-center">
+        <button
+          type="submit"
+          class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-6 rounded-lg transition duration-150"
+        >
+          RUN
+        </button>
+      </div>
+    </form>
+  </div>
 </div>

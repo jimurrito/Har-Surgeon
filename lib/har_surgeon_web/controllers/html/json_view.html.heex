@@ -31,8 +31,11 @@
             </p>
             
             <p class="text-sm text-gray-500">
-              <strong>Status:</strong> {entry["response"]["status"]} |
-              <strong>Time:</strong> {entry["time"]} ms
+              <strong>Status:</strong>
+              <text class={HarSurgeonWeb.JsonComponents.error_border(entry["response"]["status"])}>
+                {entry["response"]["status"]}
+              </text>
+              | <strong>Time:</strong> {entry["time"]} ms
             </p>
           </div>
           
@@ -61,9 +64,19 @@
                 <ul class="list-disc list-inside text-sm text-gray-700">
                   <%= for header <- entry["request"]["headers"] do %>
                     <%= if header["name"] == "Authorization" do %>
-                      <li><strong>{header["name"]}:</strong> <text class="font-bold text-red-600">REDACTED</text></li>
+                      <li>
+                        <strong>{header["name"]}:</strong>
+                        <text class="font-bold text-red-600">REDACTED</text>
+                      </li>
                     <% else %>
-                      <li><strong>{header["name"]}:</strong> {header["value"]}</li>
+                      <%= if header["name"] == "x-ms-client-query" do %>
+                        <li>
+                          <strong>{header["name"]}:</strong>
+                          <pre class="my-1 bg-gray-50 p-3 rounded-lg text-xs overflow-x-auto border border-gray-200">{HarSurgeonWeb.JsonComponents.format_json(header["value"])}</pre>
+                        </li>
+                      <% else %>
+                        <li><strong>{header["name"]}:</strong> {header["value"]}</li>
+                      <% end %>
                     <% end %>
                   <% end %>
                 </ul>
@@ -86,7 +99,7 @@
                   <p class="text-sm">
                     <strong>MIME Type:</strong> {entry["request"]["postData"]["mimeType"]}
                   </p>
-                   <pre class="bg-gray-50 p-3 rounded-lg text-xs overflow-x-auto border border-gray-200">
+                   <pre class="my-1 bg-gray-50 p-3 rounded-lg text-xs overflow-x-auto border border-gray-200">
 <%= HarSurgeonWeb.JsonComponents.format_json(entry["request"]["postData"]["text"]) %></pre>
                 </div>
               <% end %>
@@ -139,7 +152,7 @@
                   <p class="text-sm">
                     <strong>Size:</strong> {entry["response"]["content"]["size"]} bytes
                   </p>
-                   <pre class="bg-gray-50 p-3 rounded-lg text-xs overflow-x-auto border border-gray-200">
+                   <pre class="my-1 bg-gray-50 p-3 rounded-lg text-xs overflow-x-auto border border-gray-200">
 <%= HarSurgeonWeb.JsonComponents.format_json(entry["response"]["content"]["text"]) %></pre>
                 </div>
               <% end %>

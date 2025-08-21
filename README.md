@@ -62,4 +62,4 @@ HAR traces can and will capture all data input and output from the captured brow
 ## Feature backlog
 - ~~Streamline UI design.~~
 - ~~Ability to redact known sensitve data like `bearer tokens`.~~
-- RAM cache time-based garbage collection.
+- Time-based garbage collection of the HAR file RAM cache.

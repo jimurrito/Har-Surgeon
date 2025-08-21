@@ -30,4 +30,11 @@ defmodule HarSurgeonWeb.JsonComponents do
   def format_json(raw) do
     Jason.encode!(raw, pretty: true)
   end
+
+  def error_border(status_code) do
+    cond do
+      status_code >= 400 -> "text-red-700 font-bold"
+      true -> ""
+    end
+  end
 end
