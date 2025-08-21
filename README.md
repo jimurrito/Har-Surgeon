@@ -1,4 +1,4 @@
-<img src="https://github.com/jimurrito/har_surgeon/blob/master/priv/static/images/har_surgeon_logo_op.PNG" style="height:250px; width:auto;">
+<img src="https://github.com/jimurrito/har_surgeon/blob/master/priv/static/images/har_surgeon_logo_op.png" style="height:250px; width:auto;">
 
 # HAR Surgeon
 
@@ -34,9 +34,30 @@
 
 ## Setup
 
-> **From source build is the only option as of now**. OS-based releases will eventually be added to allow for execution of the app without needing to install the toolchain.
+### Docker (Recommended)
 
-### From Source
+Docker run
+
+```bash
+docker run -p 4000:4000 --name har-surgeon jimurrito/har-surgeon:latest
+```
+
+Docker Compose
+
+```yaml
+version: '3.8'
+
+services:
+  har-surgeon:
+    container_name: har-surgeon
+    image: jimurrito/har-surgeon:latest
+    ports:
+      - "4000:4000"
+```
+
+[Link to docker repo](https://hub.docker.com/r/jimurrito/har-surgeon)
+
+### From Source (Windows & Linux)
 
 1. Install Elixir 1.18 and Erland OTP 27:
 
@@ -80,3 +101,8 @@ HAR traces can and will capture all data input and output from the captured brow
 - ~~Streamline UI design.~~
 - ~~Ability to redact known sensitve data like `bearer tokens`.~~
 - Time-based garbage collection of the HAR file RAM cache.
+
+## Links
+
+- [Github](https://github.com/jimurrito/Har-Surgeon)
+- [Docker Hub](https://hub.docker.com/r/jimurrito/har-surgeon)

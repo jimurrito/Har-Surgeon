@@ -8,6 +8,7 @@ FROM elixir:1.18.4-otp-28
 
 #
 ENV MIX_ENV=prod
+ENV SECRET_KEY_BASE=${SECRET_KEY_BASE}
 #
 #
 RUN apt update && apt upgrade -y
