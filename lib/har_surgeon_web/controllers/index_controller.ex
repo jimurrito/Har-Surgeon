@@ -11,10 +11,11 @@ defmodule HarSurgeonWeb.IndexController do
   #
   # Process uploads via POST
   def upload(conn, params) do
+    # grabs uploaded file data from body params
     file_data =
       params
       |> Map.fetch!("file")
-
+    
     json_data =
       file_data
       |> Map.fetch!(:path)

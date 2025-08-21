@@ -42,6 +42,7 @@ defmodule HarSurgeonWeb.Endpoint do
 
   plug Plug.Parsers,
     parsers: [:urlencoded, :multipart, :json],
+    length: 1_000_000_000, # 1GB max file size
     pass: ["*/*"],
     json_decoder: Phoenix.json_library()
 
