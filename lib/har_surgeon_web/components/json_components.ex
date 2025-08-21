@@ -6,6 +6,12 @@ defmodule HarSurgeonWeb.JsonComponents do
   use Phoenix.Component
   use Gettext, backend: HarSurgeonWeb.Gettext
 
+  #
+  #
+  @doc """
+  Provides a CSS background color based on the HTTP method provided.
+  """
+  @spec method_color(binary()) :: binary()
   def method_color(method) do
     method
     |> case do
@@ -20,6 +26,12 @@ defmodule HarSurgeonWeb.JsonComponents do
     end
   end
 
+  #
+  #
+  @doc """
+  Formats JSON (text or map) into a pretty-formatted JSON string.
+  """
+  @spec format_json(binary() | map()) :: binary()
   def format_json(raw) when is_binary(raw) do
     case Jason.decode(raw) do
       {:ok, parsed} -> Jason.encode!(parsed, pretty: true)
@@ -31,10 +43,28 @@ defmodule HarSurgeonWeb.JsonComponents do
     Jason.encode!(raw, pretty: true)
   end
 
-  def error_border(status_code) do
+  #
+  #
+  @doc """
+  If status code provided is 400 or higher, the return CSS will be `text-red-700 font-bold`.
+  Otherwise the return will be an empty string.
+  """
+  @spec error_color_text(non_neg_integer()) :: binary()
+  def error_color_text(status_code) do
     cond do
       status_code >= 400 -> "text-red-700 font-bold"
       true -> ""
+    end
+  end
+
+  #
+  #
+  def truncate_text(text, limit \\ 225) do
+    if String.length(text) > limit do
+      {keep , _trash} = String.split_at(text, limit)
+      "#{keep} ..."
+    else
+      text
     end
   end
 end

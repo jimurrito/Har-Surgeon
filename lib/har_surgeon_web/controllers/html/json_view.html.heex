@@ -2,13 +2,13 @@
   <!-- Metadata Panel -->
   <div class="bg-white p-6 rounded-2xl shadow-xl border border-gray-200">
     <div class="text-sm text-gray-700"><strong>Filename:</strong> {@filename}</div>
-    
+
     <strong class="block mt-4 mb-1 text-indigo-700">Browser:</strong> <pre class="bg-gray-50 p-3 rounded-lg text-xs overflow-x-auto border border-gray-200">
-{@browser |> HarSurgeonWeb.JsonComponents.format_json()}</pre>
+{@browser |> format_json()}</pre>
     <strong class="block mt-4 mb-1 text-indigo-700">Pages:</strong> <pre class="bg-gray-50 p-3 rounded-lg text-xs overflow-x-auto border border-gray-200">
-{@pages |> HarSurgeonWeb.JsonComponents.format_json()}</pre>
+{@pages |> format_json()}</pre>
   </div>
-   <div class="my-6" />
+  <div class="my-6" />
   <!-- Entry Blocks -->
   <div>
     <%= for entry <- @entries do %>
@@ -25,20 +25,20 @@
             <p class="text-sm text-gray-500">
               <strong>Started:</strong> {entry["startedDateTime"]}
             </p>
-            
+
             <p class="text-lg font-semibold text-gray-800">
-              {entry["request"]["method"]} → {entry["request"]["url"]}
+              {entry["request"]["method"]} → {truncate_text(entry["request"]["url"])}
             </p>
-            
+
             <p class="text-sm text-gray-500">
               <strong>Status:</strong>
-              <text class={HarSurgeonWeb.JsonComponents.error_border(entry["response"]["status"])}>
+              <text class={error_color_text(entry["response"]["status"])}>
                 {entry["response"]["status"]}
               </text>
               | <strong>Time:</strong> {entry["time"]} ms
             </p>
           </div>
-          
+
           <div class="text-gray-400 text-xl">
             <span x-show="!open">▶</span> <span x-show="open">▼</span>
           </div>
@@ -53,14 +53,14 @@
             >
               Request Details <span x-show="!show">▶</span><span x-show="show">▼</span>
             </div>
-            
+
             <div x-show="show" class="mt-3 space-y-4">
               <!-- Headers -->
               <div>
                 <h5 class="font-semibold text-gray-700 tracking-tight">
                   Headers {"(#{entry["request"]["headersSize"]} bytes)"}
                 </h5>
-                 <hr class="my-2 border-t-2 border-indigo-300 rounded-full" />
+                <hr class="my-2 border-t-2 border-indigo-300 rounded-full" />
                 <ul class="list-disc list-inside text-sm text-gray-700">
                   <%= for header <- entry["request"]["headers"] do %>
                     <%= if header["name"] == "Authorization" do %>
@@ -84,7 +84,7 @@
               <!-- Cookies -->
               <div>
                 <h5 class="font-semibold text-gray-700 tracking-tight">Cookies</h5>
-                 <hr class="my-2 border-t-2 border-indigo-300 rounded-full" />
+                <hr class="my-2 border-t-2 border-indigo-300 rounded-full" />
                 <ul class="list-disc list-inside text-sm text-gray-700">
                   <%= for cookie <- entry["request"]["cookies"] do %>
                     <li><strong>{cookie["name"]}:</strong> {cookie["value"]}</li>
@@ -95,17 +95,17 @@
               <%= if entry["request"]["postData"] do %>
                 <div>
                   <h5 class="font-semibold text-gray-700 tracking-tight">Post Data</h5>
-                   <hr class="my-2 border-t-2 border-indigo-300 rounded-full" />
+                  <hr class="my-2 border-t-2 border-indigo-300 rounded-full" />
                   <p class="text-sm">
                     <strong>MIME Type:</strong> {entry["request"]["postData"]["mimeType"]}
                   </p>
-                   <pre class="my-1 bg-gray-50 p-3 rounded-lg text-xs overflow-x-auto border border-gray-200">
-<%= HarSurgeonWeb.JsonComponents.format_json(entry["request"]["postData"]["text"]) %></pre>
+                  <pre class="my-1 bg-gray-50 p-3 rounded-lg text-xs overflow-x-auto border border-gray-200">
+<%= format_json(entry["request"]["postData"]["text"]) %></pre>
                 </div>
               <% end %>
             </div>
           </div>
-           <hr class="border-t-4 border-indigo-400 rounded-full" />
+          <hr class="border-t-4 border-indigo-400 rounded-full" />
           <!-- Response Section -->
           <div x-data="{ show: false }">
             <div
@@ -114,14 +114,14 @@
             >
               Response Details <span x-show="!show">▶</span><span x-show="show">▼</span>
             </div>
-            
+
             <div x-show="show" class="mt-3 space-y-4">
               <!-- Headers -->
               <div>
                 <h5 class="font-semibold text-gray-700 tracking-tight">
                   Headers {"(#{entry["response"]["headersSize"]} bytes)"}
                 </h5>
-                 <hr class="my-2 border-t-2 border-indigo-300 rounded-full" />
+                <hr class="my-2 border-t-2 border-indigo-300 rounded-full" />
                 <ul class="list-disc list-inside text-sm text-gray-700">
                   <%= for header <- entry["response"]["headers"] do %>
                     <li><strong>{header["name"]}:</strong> {header["value"]}</li>
@@ -132,7 +132,7 @@
               <%= if entry["response"]["cookies"] && entry["response"]["cookies"] != [] do %>
                 <div>
                   <h5 class="font-semibold text-gray-700 tracking-tight">Cookies</h5>
-                   <hr class="my-2 border-t-2 border-indigo-300 rounded-full" />
+                  <hr class="my-2 border-t-2 border-indigo-300 rounded-full" />
                   <ul class="list-disc list-inside text-sm text-gray-700">
                     <%= for cookie <- entry["response"]["cookies"] do %>
                       <li><strong>{cookie["name"]}:</strong> {cookie["value"]}</li>
@@ -144,16 +144,16 @@
               <%= if entry["response"]["content"] do %>
                 <div>
                   <h5 class="font-semibold text-gray-700 tracking-tight">Content</h5>
-                   <hr class="my-2 border-t-2 border-indigo-300 rounded-full" />
+                  <hr class="my-2 border-t-2 border-indigo-300 rounded-full" />
                   <p class="text-sm">
                     <strong>MIME Type:</strong> {entry["response"]["content"]["mimeType"]}
                   </p>
-                  
+
                   <p class="text-sm">
                     <strong>Size:</strong> {entry["response"]["content"]["size"]} bytes
                   </p>
-                   <pre class="my-1 bg-gray-50 p-3 rounded-lg text-xs overflow-x-auto border border-gray-200">
-<%= HarSurgeonWeb.JsonComponents.format_json(entry["response"]["content"]["text"]) %></pre>
+                  <pre class="my-1 bg-gray-50 p-3 rounded-lg text-xs overflow-x-auto border border-gray-200">
+<%= format_json(entry["response"]["content"]["text"]) %></pre>
                 </div>
               <% end %>
             </div>
