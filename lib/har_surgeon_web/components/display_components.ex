@@ -64,12 +64,27 @@ defmodule HarSurgeonWeb.DisplayComponents do
   Default limit is `225` characters.
   """
   @spec truncate_text(binary(), non_neg_integer()) :: binary()
-  def truncate_text(text, limit \\ 225) do
+  def truncate_text(text, limit \\ 100) do
     if String.length(text) > limit do
       {keep, _trash} = String.split_at(text, limit)
       "#{keep} ..."
     else
       text
+    end
+  end
+
+  #
+  #
+  @doc """
+  Formats floats and integer based data sizes.
+  """
+  @spec format_data_size(integer() | float()) :: binary()
+  def format_data_size(data_size) do
+    cond do
+      data_size > 1_000_000_000 -> "#{data_size / 1_000_000_000} GB"
+      data_size > 1_000_000 -> "#{data_size / 1_000_000} MB"
+      data_size > 1_000 -> "#{data_size / 1000} KB"
+      true -> "#{data_size} B"
     end
   end
 end

@@ -2,6 +2,7 @@
 
 # HAR Surgeon
 
+
 ## Features
 
 - 🔥**Blazingly Fast and responsive**🔥 - Front end uses only HTML, Alpine.JS and Tailwind-CSS.
@@ -9,6 +10,27 @@
 - **Secure** - Data is kept local to the machine, and stored in RAM.
 - **Offline Support** - App can be ran with out any internet connection. All logic is ran locally on the machine.
 - **Multi-Tasking** - Supports multiple browser windows to allow for checking multiple traces at once.
+
+
+## Usage
+
+- Upload or paste your HAR Trace into the web page.
+- Once you submit the HAR trace via the `upload` button, the trace will be parsed and then displayed.
+
+
+## Examples
+
+> Home page
+
+<img src="sample-images/home-view.png">
+
+<br>
+
+> HAR File Viewer
+
+<img src="sample-images/json-view.jpeg">
+
+
 
 ## Setup
 
@@ -46,11 +68,6 @@
    ```
 
 6. Open your browser to [http://localhost:4000](http://localhost:4000)
-
-## Usage
-
-- Upload or paste your HAR Trace into the web page.
-- Once you submit the HAR trace via the `upload` button, the trace will be parsed and then displayed.
 
 
 ## Notes

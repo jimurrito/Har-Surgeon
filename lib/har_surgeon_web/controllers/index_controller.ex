@@ -15,16 +15,25 @@ defmodule HarSurgeonWeb.IndexController do
     file_data =
       params
       |> Map.fetch!("file")
-    
-    json_data =
+
+    file_path =
       file_data
       |> Map.fetch!(:path)
+
+    json_data =
+      file_path
       |> File.read!()
       |> :json.decode()
 
+    file_size =
+      file_path
+      |> File.stat!()
+      |> Map.fetch!(:size)
+
     payload = %{
       filename: file_data |> Map.fetch!(:filename),
-      json: json_data
+      json: json_data,
+      file_size: file_size
     }
 
     tid = Tracker.new(payload)
@@ -40,15 +49,25 @@ defmodule HarSurgeonWeb.IndexController do
     payload = tracker_data |> Map.fetch!(:json) |> Map.fetch!("log")
     # deconstruct payload
     entries = payload |> Map.fetch!("entries")
-    browser = payload |> Map.fetch!("browser")
+
+    browser =
+      payload
+      |> Map.fetch("browser")
+      |> case do
+        {:ok, data} -> data
+        :error -> nil
+      end
+
     pages = payload |> Map.fetch!("pages")
+    file_size = tracker_data |> Map.fetch!(:file_size)
 
     render(conn, :json_view,
       tid: tid,
       filename: tracker_data.filename,
       entries: entries,
       browser: browser,
-      pages: pages
+      pages: pages,
+      file_size: file_size
     )
   end
 end
