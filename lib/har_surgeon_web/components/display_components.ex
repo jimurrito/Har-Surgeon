@@ -1,6 +1,6 @@
-defmodule HarSurgeonWeb.JsonComponents do
+defmodule HarSurgeonWeb.DisplayComponents do
   @moduledoc """
-  Components to help render the HAR file JSON data.
+  Components to help display values or configure object color based on JSON data.
   """
 
   use Phoenix.Component
@@ -59,9 +59,14 @@ defmodule HarSurgeonWeb.JsonComponents do
 
   #
   #
+  @doc """
+  Truncates text that is longer then the provided limit.
+  Default limit is `225` characters.
+  """
+  @spec truncate_text(binary(), non_neg_integer()) :: binary()
   def truncate_text(text, limit \\ 225) do
     if String.length(text) > limit do
-      {keep , _trash} = String.split_at(text, limit)
+      {keep, _trash} = String.split_at(text, limit)
       "#{keep} ..."
     else
       text

@@ -1,25 +1,37 @@
 <div class="font-sans text-gray-800">
-  <!-- Metadata Panel -->
+  <!-- 
+  
+  Metadata Panel 
+  
+  -->
   <div class="bg-white p-6 rounded-2xl shadow-xl border border-gray-200">
     <div class="text-sm text-gray-700"><strong>Filename:</strong> {@filename}</div>
 
-    <strong class="block mt-4 mb-1 text-indigo-700">Browser:</strong> <pre class="bg-gray-50 p-3 rounded-lg text-xs overflow-x-auto border border-gray-200">
-{@browser |> format_json()}</pre>
-    <strong class="block mt-4 mb-1 text-indigo-700">Pages:</strong> <pre class="bg-gray-50 p-3 rounded-lg text-xs overflow-x-auto border border-gray-200">
-{@pages |> format_json()}</pre>
+    <strong class="block mt-4 mb-1 text-indigo-700">Browser:</strong>
+    <.json_block {%{input: @browser}} />
+    <strong class="block mt-4 mb-1 text-indigo-700">Pages:</strong>
+    <.json_block {%{input: @pages}} />
   </div>
   <div class="my-6" />
-  <!-- Entry Blocks -->
+  <!-- 
+  
+  Entry Blocks 
+  
+  -->
   <div>
     <%= for entry <- @entries do %>
       <div
         x-data="{ open: false, showRequest: false, showResponse: false }"
         class="border border-gray-200 rounded-2xl shadow-md mb-6 bg-gradient-to-br from-white to-gray-50 transition hover:shadow-lg"
       >
-        <!-- Summary Header -->
+        <!-- 
+        
+        Summary View 
+        
+        -->
         <div
           @click="open = !open"
-          class={"flex justify-between items-center p-4 cursor-pointer rounded-t-2xl transition-colors duration-200 hover:bg-indigo-50 #{HarSurgeonWeb.JsonComponents.method_color(entry["request"]["method"])}"}
+          class={"flex justify-between items-center p-4 cursor-pointer rounded-t-2xl transition-colors duration-200 hover:bg-indigo-50 #{method_color(entry["request"]["method"])}"}
         >
           <div>
             <p class="text-sm text-gray-500">
@@ -43,9 +55,17 @@
             <span x-show="!open">▶</span> <span x-show="open">▼</span>
           </div>
         </div>
-        <!-- Expanded Details -->
+        <!-- 
+        
+        Expanded View 
+        
+        -->
         <div x-show="open" x-transition class="p-6 space-y-6 bg-white rounded-b-2xl">
-          <!-- Request Section -->
+          <!-- 
+          
+          Request Section 
+          
+          -->
           <div x-data="{ show: false }">
             <div
               @click="show = !show"
@@ -72,7 +92,7 @@
                       <%= if header["name"] == "x-ms-client-query" do %>
                         <li>
                           <strong>{header["name"]}:</strong>
-                          <pre class="my-1 bg-gray-50 p-3 rounded-lg text-xs overflow-x-auto border border-gray-200">{HarSurgeonWeb.JsonComponents.format_json(header["value"])}</pre>
+                          <.json_block {%{input: header["value"]}} />
                         </li>
                       <% else %>
                         <li><strong>{header["name"]}:</strong> {header["value"]}</li>
@@ -99,14 +119,17 @@
                   <p class="text-sm">
                     <strong>MIME Type:</strong> {entry["request"]["postData"]["mimeType"]}
                   </p>
-                  <pre class="my-1 bg-gray-50 p-3 rounded-lg text-xs overflow-x-auto border border-gray-200">
-<%= format_json(entry["request"]["postData"]["text"]) %></pre>
+                  <.json_block {%{input: entry["request"]["postData"]["text"]}} />
                 </div>
               <% end %>
             </div>
           </div>
           <hr class="border-t-4 border-indigo-400 rounded-full" />
-          <!-- Response Section -->
+          <!-- 
+          
+          Response Section 
+          
+          -->
           <div x-data="{ show: false }">
             <div
               @click="show = !show"
@@ -152,8 +175,7 @@
                   <p class="text-sm">
                     <strong>Size:</strong> {entry["response"]["content"]["size"]} bytes
                   </p>
-                  <pre class="my-1 bg-gray-50 p-3 rounded-lg text-xs overflow-x-auto border border-gray-200">
-<%= format_json(entry["response"]["content"]["text"]) %></pre>
+                  <.json_block {%{input: entry["response"]["content"]["text"]}} />
                 </div>
               <% end %>
             </div>
