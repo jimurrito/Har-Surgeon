@@ -57,6 +57,41 @@ services:
 
 [Link to docker repo](https://hub.docker.com/r/jimurrito/har-surgeon)
 
+
+### Nix Shell + Source
+
+> For using the Nix Shell file, you must have either `Nixos` installed on your machine or use the `Nix package manager` which can be installed on most Linux distros.
+>
+> **Debian/Ubuntu Example:**
+> 
+> `sudo apt install nix`
+> 
+
+1. Clone the repository:
+    ```bash
+    git clone https://github.com/jimurrito/har_surgeon.git
+    cd har-surgeon
+    ```
+
+2. Load the tool chain shell file `shell.nix`.
+    ```bash
+    nix-shell
+    ```
+
+3. Install dependencies:
+    ``` bash
+    mix deps.get
+    ```
+
+4. Start the web server:
+   ```
+   mix phx.server
+   ```
+
+5. Open your browser to [http://localhost:4000](http://localhost:4000)
+
+
+
 ### From Source (Windows & Linux)
 
 1. Install Elixir 1.18 and Erland OTP 27:
