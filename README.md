@@ -10,6 +10,7 @@
 - **Secure** - Data is kept local to the machine, and stored in RAM.
 - **Offline Support** - App can be ran with out any internet connection. All logic is ran locally on the machine.
 - **Multi-Tasking** - Supports multiple browser windows to allow for checking multiple traces at once.
+- **ARM64 Support** - Supports use with x86_84 and ARM64 based CPU Architectures.
 
 
 ## Usage
