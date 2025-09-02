@@ -8,7 +8,6 @@ FROM elixir:1.18.4-otp-28
 
 #
 ENV MIX_ENV=prod
-ENV SECRET_KEY_BASE=${SECRET_KEY_BASE}
 #
 #
 RUN apt update && apt upgrade -y
@@ -26,7 +25,9 @@ RUN mix compile
 RUN mix assets.setup
 RUN mix assets.deploy
 RUN mix phx.digest
+RUN mix phx.gen.release
+RUN mix release
 #
 EXPOSE 4000
 #
-CMD ["mix", "phx.server"]
+CMD ["bash", "start.bash"]

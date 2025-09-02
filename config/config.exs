@@ -12,7 +12,7 @@ config :har_surgeon,
 
 # Configures the endpoint
 config :har_surgeon, HarSurgeonWeb.Endpoint,
-  url: [host: "localhost"],
+  url: [host: "localhost", path: "/"],
   adapter: Bandit.PhoenixAdapter,
   render_errors: [
     formats: [html: HarSurgeonWeb.ErrorHTML, json: HarSurgeonWeb.ErrorJSON],
