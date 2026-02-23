@@ -25,8 +25,13 @@ jobs:
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
-
-      - name: Build and push har-surgeon
+        
+        # used to create dated tag
+      - name: Set date tag 
+        id: date 
+        run: echo "TAG=$(date +'%Y%m%d')" >> $GITHUB_OUTPUT
+  
+      - name: Build and push container
         uses: docker/build-push-action@v6
         with:
           context: .
@@ -35,7 +40,7 @@ jobs:
           #platforms: |
           #  linux/amd64
           #  linux/arm64
-          build-args: |
-            MC_VERSION=1_21_1
-          tags: forgejo.immerhouse.com/jimurrito/har-surgeon:latest
+          tags: |
+            forgejo.immerhouse.com/jimurrito/har-surgeon:latest
+            forgejo.immerhouse.com/jimurrito/har-surgeon:${{ steps.date.outputs.TAG }}
 
