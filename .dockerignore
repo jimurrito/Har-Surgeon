@@ -1,0 +1,9 @@
+.elixir_ls/
+.expert/
+_build/
+runbook/
+sample-images
+.env
+.gitignore
+dockerfile
+shell.nix
