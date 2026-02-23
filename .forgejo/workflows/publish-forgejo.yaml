@@ -37,5 +37,5 @@ jobs:
           #  linux/arm64
           build-args: |
             MC_VERSION=1_21_1
-          tags: forgejo.immerhouse.com/jimurrito/har_surgeon:latest
+          tags: forgejo.immerhouse.com/jimurrito/har-surgeon:latest
 
