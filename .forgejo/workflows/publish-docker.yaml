@@ -40,7 +40,7 @@ jobs:
           #  - linux/amd64
           #  - linux/arm64
           tags: |
-            docker.io/jimurrito/har-surgeon:latest
             docker.io/jimurrito/har-surgeon:${{ steps.date.outputs.TAG }}
+            docker.io/jimurrito/har-surgeon:latest
           
 

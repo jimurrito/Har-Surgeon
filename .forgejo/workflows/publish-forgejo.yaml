@@ -41,6 +41,7 @@ jobs:
           #  linux/amd64
           #  linux/arm64
           tags: |
-            forgejo.immerhouse.com/jimurrito/har-surgeon:latest
             forgejo.immerhouse.com/jimurrito/har-surgeon:${{ steps.date.outputs.TAG }}
+            forgejo.immerhouse.com/jimurrito/har-surgeon:latest
+
 
